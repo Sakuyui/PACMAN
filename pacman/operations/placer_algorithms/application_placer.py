@@ -235,8 +235,7 @@ def _check_could_fit(
     :raises PacmanTooBigToPlace:
     """
     version = PacmanDataView.get_machine_version()
-    max_sdram = (
-            version.max_sdram_per_chip - PacmanDataView.get_monitor_sdram())
+    max_sdram = (version.max_sdram_per_chip - PacmanDataView.get_monitor_sdram())
     max_cores = (
             version.max_cores_per_chip - version.n_non_user_cores -
             PacmanDataView.get_monitor_cores())
