@@ -62,9 +62,7 @@ class PartitionerSelector(object):
                     solution_file_path=None,
                     read_solution_from_file=False,
                     serialize_solution_to_file=True,
-                    ga_algorithm_configuration=ga_configuration, 
-                    neurodynamics_configuration_base_path=extra_args['neurodynamics_configuration_base_path'], 
-                    neurodynamics_configuration_name=extra_args['neurodynamics_configuration_name']).partitioning()
+                    ga_algorithm_configuration=ga_configuration).partitioning()
 
     def get_partitioner_instance(self):
         return self._partitioner

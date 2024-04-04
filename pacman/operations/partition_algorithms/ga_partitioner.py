@@ -38,7 +38,7 @@ class GaAlgorithmSolutionReader(object):
                 return GASliceSolutionRepresentation(solution[4], None, None, solution_max_cores_per_chip, solution_max_chips, False)
     
 class GAPartitioner(AbstractPartitioner):
-    def __init__(self, resource_contraints_configuration, max_slice_length = 100, solution_file_path=None, read_solution_from_file=False, serialize_solution_to_file=False, ga_algorithm_configuration: GAAlgorithmConfiguration=None, neurodynamics_configuration_base_path = "./", neurodynamics_configuration_name = ""):
+    def __init__(self, resource_contraints_configuration, max_slice_length = 100, solution_file_path=None, read_solution_from_file=False, serialize_solution_to_file=False, ga_algorithm_configuration: GAAlgorithmConfiguration=None):
         super().__init__(resource_contraints_configuration)
         SDRAM_SIZE = self.get_resource_constraint_configuration().get_max_sdram()
         self._max_slice_length = max_slice_length
