@@ -19,7 +19,8 @@ from pacman.operations.partition_algorithms.neurodynamics.ising_model import Isi
 import os
 
 class PartitionerSelector(object):
-    def __init__(self, partitioner_name, resource_constraint_configuration: ResourceConfiguration, extra_args:dict=None) -> None:
+    def __init__(self, resource_constraint_configuration, optimization_configuration:dict) -> None:
+        partitioner_name = optimization_configuration['partitioner']
         self._partitioner_name = partitioner_name
         self._resource_constraint_configuration: ResourceConfiguration = resource_constraint_configuration
         if partitioner_name == "splitter":
@@ -29,7 +30,9 @@ class PartitionerSelector(object):
             self._partitioner = RandomPartitioner(100, resource_constraint_configuration).partitioning()
             self._n_chips = self._partitioner.get_n_chips()
         if partitioner_name == "ga":
-            ising_model, samples = load_neurodynamics_record(extra_args['neurodynamics_configuration_name'], extra_args['neurodynamics_configuration_base_path'])
+            ising_model, samples = \
+                load_neurodynamics_record(optimization_configuration['config']['neurodynamics_configuration_name'], 
+                                          optimization_configuration['config']['neurodynamics_configuration_base_path'])
 
             ga_configuration: GAAlgorithmConfiguration = \
                 GAAlgorithmConfiguration(
