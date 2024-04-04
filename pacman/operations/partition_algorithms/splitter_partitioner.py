@@ -29,8 +29,8 @@ def splitter_partitioner() -> int:
     """
     progress = ProgressBar(
         PacmanDataView.get_n_vertices(), "Partitioning Graph")
-
-    # Partition one vertex at a time
+    
+# Partition one vertex at a time
     chip_counter = ChipCounter()
     for vertex in progress.over(PacmanDataView.iterate_vertices()):
         vertex.splitter.create_machine_vertices(chip_counter)
