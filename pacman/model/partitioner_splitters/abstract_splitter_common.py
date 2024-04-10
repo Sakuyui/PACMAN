@@ -75,6 +75,15 @@ class AbstractSplitterCommon(object, metaclass=AbstractBase):
         :param ~pacman.utilities.utility_objs.ChipCounter chip_counter:
             counter of used chips
         """
+        
+    @abstractmethod
+    def create_machine_vertices_various_slice_size(self, chip_counter):
+        """
+        Method for specific splitter objects to override.
+
+        :param ~pacman.utilities.utility_objs.ChipCounter chip_counter:
+            counter of used chips
+        """
 
     @abstractmethod
     def get_out_going_slices(self):

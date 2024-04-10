@@ -252,6 +252,10 @@ class PacmanDataView(MachineDataView):
         return cls.__pacman_data._graph.n_outgoing_edge_partitions
 
     @classmethod
+    def get_graph(cls) -> ApplicationGraph:
+        return cls.__pacman_data._graph
+    
+    @classmethod
     def get_outgoing_edge_partitions_starting_at_vertex(cls, vertex):
         """
         Get all the edge partitions that start at the given vertex.

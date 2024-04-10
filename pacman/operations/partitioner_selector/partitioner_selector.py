@@ -15,7 +15,7 @@ class PartitionerSelector(object):
             self._n_chips = splitter_partitioner()
         elif partitioner_name == "variant_splitter":
             self._partitioner = None
-            self._n_chips = variance_size_splitter_partitioner()
+            self._n_chips = variance_size_splitter_partitioner(optimization_configuration['config']['slice_lengths'])
 #         if partitioner_name == "random":
 #             self._partitioner = RandomPartitioner(100, resource_constraint_configuration).partitioning()
 #             self._n_chips = self._partitioner.get_n_chips()
