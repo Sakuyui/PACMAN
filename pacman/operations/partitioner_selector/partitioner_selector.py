@@ -1,8 +1,6 @@
 from pacman.operations.partition_algorithms.splitter_partitioner import splitter_partitioner
-
+from pacman.operations.partition_algorithms.variance_size_splitter_partitioner import variance_size_splitter_partitioner
 from pacman.operations.partition_algorithms.ga.entities.resource_configuration import ResourceConfiguration
-
-
 from pacman.data import PacmanDataView
 
 import os
@@ -15,6 +13,9 @@ class PartitionerSelector(object):
         if partitioner_name == "splitter":
             self._partitioner = None
             self._n_chips = splitter_partitioner()
+        elif partitioner_name == "variant_splitter":
+            self._partitioner = None
+            self._n_chips = variance_size_splitter_partitioner()
 #         if partitioner_name == "random":
 #             self._partitioner = RandomPartitioner(100, resource_constraint_configuration).partitioning()
 #             self._n_chips = self._partitioner.get_n_chips()
