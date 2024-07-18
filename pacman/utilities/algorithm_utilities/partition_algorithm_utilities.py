@@ -31,6 +31,8 @@ def get_multidimensional_slices(app_vertex):
     :rtype: list(~pacman.model.graphs.common.Slice)
     """
     atoms_per_core = app_vertex.get_max_atoms_per_dimension_per_core()
+    print("atoms_per_core = %s" % atoms_per_core)
+
     n_atoms = app_vertex.atoms_shape
     if len(atoms_per_core) != len(n_atoms):
         raise PacmanConfigurationException(

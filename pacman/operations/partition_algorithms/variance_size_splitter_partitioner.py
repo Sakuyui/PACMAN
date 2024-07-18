@@ -31,11 +31,11 @@ def variance_size_splitter_partitioner(slice_lengths: list):
     slice_index = 0
     application_vertex_index = 0
     for vertex in progress.over(PacmanDataView.iterate_vertices()):
-        current_maximum_slice_ending += vertex.n_atoms
+        current_maximum_slice_ending += vertex.n_atoms 
         print(vertex.n_atoms)
         print("maximum_slice_ending in current vertex = %d" % current_maximum_slice_ending)
         slice_ending_in_current_application_vertex = 0
-        
+
         # make slices
         slice_length_for_current_application_vertex = []
         while slice_index < n_slices and current_slice_ending < current_maximum_slice_ending:
