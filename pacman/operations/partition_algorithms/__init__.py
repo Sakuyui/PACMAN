@@ -13,5 +13,6 @@
 # limitations under the License.
 
 from .splitter_partitioner import splitter_partitioner
+from .one_population_one_core_partitioner import one_population_one_core_partitioner
 
-__all__ = ['splitter_partitioner']
+__all__ = ['splitter_partitioner', 'one_population_one_core_partitioner']
