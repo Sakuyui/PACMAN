@@ -134,6 +134,15 @@ class PacmanDataView(MachineDataView):
         cls.set_requires_mapping()
         cls.__pacman_data._graph.add_vertex(vertex)
 
+        
+    @classmethod 
+    def set_is_set_max_atom_per_core_be_maximum(cls, value):
+        cls._is_set_max_atom_per_core_be_maximum = value
+       
+    @classmethod
+    def get_is_set_max_atom_per_core_be_maximum(cls):
+        return cls._is_set_max_atom_per_core_be_maximum
+        
     @classmethod
     def add_edge(cls, edge, outgoing_edge_partition_name):
         """
@@ -179,6 +188,16 @@ class PacmanDataView(MachineDataView):
             raise cls._exception("graph")
         return iter(cls.__pacman_data._graph.vertices)
 
+    @classmethod
+    def get_vertex_permutation(cls):
+        if hasattr(cls, '_vertex_permutation'):
+            return cls._vertex_permutation
+        return list(range(len(cls.iterate_vertices())))
+        
+    @classmethod
+    def set_vertex_permutation(cls, vertex_permutation):
+        cls._vertex_permutation = vertex_permutation
+        
     @classmethod
     def get_vertices_by_type(cls, vertex_type):
         """

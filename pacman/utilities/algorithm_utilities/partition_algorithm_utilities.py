@@ -18,9 +18,10 @@ A collection of methods which support partitioning algorithms.
 import math
 from pacman.exceptions import PacmanConfigurationException
 from pacman.model.graphs.common import MDSlice, Slice
+from pacman.data import PacmanDataView
 
 
-def get_multidimensional_slices(app_vertex):
+def get_multidimensional_slices(app_vertex, specified_max_atoms_per_core = -1, specified_max_atoms_per_dimension_per_core = -1):
     """
     Get the multi-dimensional slices of an application vertex
     such that each is sized to the maximum atoms per dimension per core
@@ -30,8 +31,12 @@ def get_multidimensional_slices(app_vertex):
     :return: The slices
     :rtype: list(~pacman.model.graphs.common.Slice)
     """
+#     if specified_max_atoms_per_core == -1 or specified_max_atoms_per_dimension_per_core == -1 and PacmanDataView.get_is_set_max_atom_per_core_be_maximum():
+#         specified_max_atoms_per_core = 10000
+#         specified_max_atoms_per_dimension_per_core = 10000
     atoms_per_core = app_vertex.get_max_atoms_per_dimension_per_core()
-    print("atoms_per_core = %s" % atoms_per_core)
+    # print(specified_max_atoms_per_core, specified_max_atoms_per_dimension_per_core, atoms_per_core)
+
 
     n_atoms = app_vertex.atoms_shape
     if len(atoms_per_core) != len(n_atoms):
@@ -40,7 +45,7 @@ def get_multidimensional_slices(app_vertex):
             " dimensions")
 
     if len(app_vertex.atoms_shape) == 1:
-        return get_single_dimension_slices(app_vertex)
+        return get_single_dimension_slices(app_vertex, specified_max_atoms_per_core, specified_max_atoms_per_dimension_per_core)
 
     # Find out how many vertices we will create, keeping track of the
     # total atoms per core, and the numerator to divide by when working
@@ -85,7 +90,7 @@ def get_multidimensional_slices(app_vertex):
     return slices
 
 
-def get_single_dimension_slices(app_vertex):
+def get_single_dimension_slices(app_vertex, specified_max_atoms_per_core = -1, specified_max_atoms_per_dimension_per_core = -1):
     """ Get the single dimension slices of an application vertex
         such that each is sized to the maximum atoms per dimension per core
         except the last which might be smaller in one or more dimensions
@@ -93,13 +98,14 @@ def get_single_dimension_slices(app_vertex):
     :param ApplicationVertex app_vertex: The vertex to get the slices of
     """
     # If there is only one slice, get that
-    if app_vertex.n_atoms < app_vertex.get_max_atoms_per_core():
+    max_atoms_per_core = specified_max_atoms_per_core if specified_max_atoms_per_core > 0 else  app_vertex.get_max_atoms_per_core()
+    if app_vertex.n_atoms < max_atoms_per_core:
         return [Slice(0, app_vertex.n_atoms - 1)]
 
-    total_on_core = app_vertex.get_max_atoms_per_dimension_per_core()[0]
+    total_on_core = specified_max_atoms_per_dimension_per_core if specified_max_atoms_per_dimension_per_core > 0 else app_vertex.get_max_atoms_per_dimension_per_core()[0]
 
     n_vertices = math.ceil(app_vertex.n_atoms / total_on_core)
-
+    print(f"n_vertices={n_vertices}, total_on_core={total_on_core}, max_atoms_per_core={max_atoms_per_core}")
     # Run over all the vertices and create slices for them
     slices = list()
     hi_atom = -1

@@ -44,16 +44,28 @@ def place_application_graph(system_placements):
 
     # Track the placements and  space
     placements = Placements(system_placements)
+    print("Begin placing...")
     # board_colours = dict()
 
     machine = PacmanDataView.get_machine()
+    print(machine)
     plan_n_timesteps = PacmanDataView.get_plan_n_timestep()
     spaces = _Spaces(machine, placements, plan_n_timesteps)
 
     # Go through the application graph by application vertex
     progress = ProgressBar(
         PacmanDataView.get_n_vertices(), "Placing Vertices")
-    for app_vertex in progress.over(PacmanDataView.iterate_vertices()):
+    vertexes = list(PacmanDataView.iterate_vertices())
+    vertex_permutation = PacmanDataView.get_vertex_permutation()
+    print(vertex_permutation)
+    _vertexes = [None] * len(vertexes)
+    for i in range(len(vertexes)):
+        permuted_position = vertex_permutation[i]
+        vertex = vertexes[permuted_position]
+        _vertexes[i] = vertex
+    vertexes = _vertexes
+        
+    for app_vertex in progress.over(vertexes):
         spaces.restore_chips()
 
         # Try placements from the next chip, but try again if fails
@@ -63,6 +75,7 @@ def place_application_graph(system_placements):
             try:
 
                 same_chip_groups = app_vertex.splitter.get_same_chip_groups()
+                #print(same_chip_groups)
 
                 if not same_chip_groups:
                     placed = True
@@ -94,6 +107,7 @@ def place_application_graph(system_placements):
 
                     if _do_fixed_location(vertices_to_place, sdram, placements,
                                           machine, next_chip_space):
+                        print("_do_fixed_location")
                         continue
 
                     # Try to find a chip with space; this might result in a
@@ -109,6 +123,7 @@ def place_application_graph(system_placements):
                     _store_on_chip(
                         placements_to_make, vertices_to_place, sdram,
                         next_chip_space)
+                    print("Place::",vertices, placements_to_make, vertices_to_place)
 
                 # Now make the placements having confirmed all can be done
                 placements.add_placements(placements_to_make)
@@ -146,6 +161,7 @@ def _place_error(
     n_vertices = 0
     for app_vertex in PacmanDataView.iterate_vertices():
         same_chip_groups = app_vertex.splitter.get_same_chip_groups()
+
         app_vertex_placed = True
         found_placed_cores = False
         for vertices, _sdram in same_chip_groups:
@@ -454,6 +470,7 @@ class _Spaces(object):
         :rtype: Chip
         """
         while self.__restored_chips:
+            print("restored_chips", self.__restored_chips)
             chip = self.__restored_chips.pop(last=False)
             if chip not in self.__used_chips:
                 return chip
@@ -580,6 +597,10 @@ class _ChipWithSpace(object):
         self.cores = set(p.processor_id for p in chip.processors
                          if not p.is_monitor)
         self.cores -= used_processors
+        
+        # [Important] Remove this.
+        self.cores -= set(range(7, 18))
+        self.cores -= set([3])
         self.sdram = chip.sdram - used_sdram
 
     @property

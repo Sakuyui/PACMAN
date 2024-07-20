@@ -113,7 +113,9 @@ class ApplicationVertex(AbstractVertex, metaclass=AbstractBase):
         :param ~pacman.model.graphs.machine.MachineVertex machine_vertex:
             A pointer to a machine_vertex
         """
+        #print("remember machine_vertex = " + str(len(self._machine_vertices)))
         machine_vertex.index = len(self._machine_vertices)
+        
         self._machine_vertices.add(machine_vertex)
 
     @property
@@ -192,7 +194,9 @@ class ApplicationVertex(AbstractVertex, metaclass=AbstractBase):
         :rtype: tuple(int,...)
         """
         if self._max_atoms_per_dimension_per_core is None:
+            print("self._max_atoms_per_dimension_per_core is None. Return ", self.atoms_shape)
             return self.atoms_shape
+        print("self._max_atoms_per_dimension_per_core not None. Return ",  self._max_atoms_per_dimension_per_core)
         return self._max_atoms_per_dimension_per_core
 
     def set_max_atoms_per_dimension_per_core(self, new_value):

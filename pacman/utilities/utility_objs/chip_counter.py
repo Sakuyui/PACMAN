@@ -62,3 +62,10 @@ class ChipCounter(object):
         :rtype: int
         """
         return self.__n_chips
+
+    @property
+    def n_core_free(self):
+        """
+        :rtype: int
+        """
+        return self.__cores_free

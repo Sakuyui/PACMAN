@@ -10,6 +10,7 @@ class PartitionerSelector(object):
     def __init__(self, resource_constraint_configuration, optimization_configuration:dict) -> None:
         partitioner_name = optimization_configuration['partitioner']
         self._partitioner_name = partitioner_name
+        print(partitioner_name)
         self._resource_constraint_configuration: ResourceConfiguration = resource_constraint_configuration
         if partitioner_name == "splitter":
             self._partitioner = None
@@ -19,7 +20,7 @@ class PartitionerSelector(object):
             self._n_chips = variance_size_splitter_partitioner(optimization_configuration['config']['slice_lengths'])
         elif partitioner_name == "one_population_one_core":
             self._partitioner = None
-            self._n_chips = one_population_one_core_partitioner()
+            self._n_chips = one_population_one_core_partitioner(optimization_configuration['config'])
 #         if partitioner_name == "random":
 #             self._partitioner = RandomPartitioner(100, resource_constraint_configuration).partitioning()
 #             self._n_chips = self._partitioner.get_n_chips()
